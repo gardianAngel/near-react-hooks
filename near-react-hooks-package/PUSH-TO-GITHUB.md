@@ -16,8 +16,12 @@ cd near-react-hooks-package
 
 ### 3. Push to GitHub
 ```bash
-# Add your GitHub repo as origin (replace YOUR_USERNAME)
-git remote add origin https://github.com/YOUR_USERNAME/near-react-hooks.git
+# Add your GitHub repo as origin (using your token)
+git remote add origin https://github.com/unyimeabasi/near-react-hooks.git
+
+# Configure git authentication with your token
+git config credential.helper store
+echo "https://$GITHUB_PERSONAL_ACCESS_TOKEN@github.com" > ~/.git-credentials
 
 # Push the code
 git branch -M main
