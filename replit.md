@@ -94,7 +94,16 @@ This is a NEAR React Hooks library project that aims to simplify NEAR Protocol i
 
 ```
 Changelog:
-- July 05, 2025. Initial setup
+- July 05, 2025: Initial project setup with showcase website
+- July 05, 2025: Complete NEAR React Hooks npm package implementation
+  • Created comprehensive TypeScript npm package structure
+  • Implemented all four core hooks (useNearWallet, useNearAccount, useNearContract, useNearTransaction)
+  • Built three complete demo applications with professional styling
+  • Added comprehensive test suite with Jest and React Testing Library
+  • Configured CI/CD pipeline with automated testing and npm publishing
+  • Created detailed documentation including README, API docs, and contributing guidelines
+  • Set up build system with Rollup for ESM/CJS support
+  • Added TypeScript configuration and type definitions
 ```
 
 ## User Preferences
