@@ -1,115 +1,122 @@
-# NEAR React Hooks - Replit Project Guide
+# NEAR React Hooks
 
 ## Overview
 
-This is a NEAR React Hooks library project that aims to simplify NEAR Protocol integration for React developers. The project provides a comprehensive set of TypeScript React hooks that reduce boilerplate code from 50+ lines to just 3 lines for common NEAR Protocol operations like wallet connections, smart contract interactions, and transaction tracking.
+This project is a comprehensive NEAR React Hooks library that simplifies NEAR Protocol blockchain integration for React developers. The library transforms complex NEAR Protocol operations from 50+ lines of boilerplate code into just 3 lines, making blockchain development accessible to React developers.
+
+The project includes both a complete hooks library package and a demo web application showcasing the library's capabilities.
 
 ## System Architecture
 
 ### Frontend Architecture
-- **React 18** with TypeScript for type safety
-- **Vite** as the build tool and development server
-- **Tailwind CSS** with shadcn/ui components for styling
-- **React Router (Wouter)** for client-side routing
-- **TanStack Query** for server state management
-- **Custom NEAR React Hooks** for blockchain integration
+- **React 18** with TypeScript for type safety and modern React features
+- **Vite** as the build tool and development server for fast development
+- **Tailwind CSS** with shadcn/ui components for modern, accessible styling
+- **Wouter** for lightweight client-side routing
+- **TanStack Query** for server state management and caching
+- **Custom NEAR React Hooks** for seamless blockchain integration
 
 ### Backend Architecture
-- **Express.js** server with TypeScript
-- **RESTful API** structure with `/api` prefix
-- **In-memory storage** with interface for easy database migration
-- **Development/production environment separation**
+- **Express.js** server with TypeScript for API endpoints
+- **RESTful API** structure with `/api` prefix for clear separation
+- **In-memory storage** with interface-based design for easy database migration
+- **Development/production environment separation** for different deployment scenarios
 
 ### Database Architecture
-- **Drizzle ORM** configured for PostgreSQL
-- **Neon Database** integration ready
-- **User schema** with username and password fields
-- **Migration system** using Drizzle Kit
+- **Drizzle ORM** configured for PostgreSQL with type-safe database operations
+- **Neon Database** integration ready for cloud deployment
+- **User schema** with username and password fields for authentication
+- **Migration system** using Drizzle Kit for database versioning
+
+### NEAR Protocol Integration
+- **NEAR API JS** as the foundation for blockchain interactions
+- **Custom hooks layer** that abstracts complex NEAR operations
+- **Wallet connection management** with automatic reconnection handling
+- **Smart contract interaction** with type-safe method calls
+- **Transaction monitoring** with status tracking and error handling
 
 ## Key Components
 
-### NEAR Integration Hooks
-- `useNearWallet()` - Wallet connection and management
-- `useNearContract()` - Smart contract interactions
-- `useNearAccount()` - Account information and balance
-- `useNearTransaction()` - Transaction status tracking
+### NEAR React Hooks Library
+Located in `near-react-hooks/` and `near-react-hooks-package/` directories:
+
+- **useNearWallet()** - Manages wallet connection, disconnection, and authentication state
+- **useNearAccount()** - Retrieves account information and balance with automatic updates
+- **useNearContract()** - Handles smart contract interactions with view and call methods
+- **useNearTransaction()** - Tracks transaction status with polling and receipt handling
+- **NearProvider** - Context provider for NEAR configuration and connection management
+
+### Web Application Components
+- **Landing page** with comprehensive documentation and live demos
+- **Interactive demos** showing real wallet connections and contract interactions
+- **Code examples** with before/after comparisons demonstrating the library's value
+- **Professional documentation** with installation guides and API references
 
 ### UI Components
-- **shadcn/ui component library** with Radix UI primitives
-- **Responsive design** with mobile-first approach
-- **Dark/light theme** support with system preference detection
-- **Toast notifications** for user feedback
-
-### Development Tools
-- **TypeScript** for type safety across the stack
-- **ESLint** and **Prettier** for code quality
-- **Vite plugins** for enhanced development experience
-- **Replit integration** with runtime error overlay
+- **shadcn/ui component library** with Radix UI primitives for accessibility
+- **Responsive design** with mobile-first approach and dark/light theme support
+- **Interactive code blocks** with copy-to-clipboard functionality
+- **Toast notifications** for user feedback and error handling
 
 ## Data Flow
 
-1. **Client-side**: React components use NEAR hooks to interact with blockchain
-2. **NEAR Provider**: Manages connection state and provides context to hooks
-3. **API Layer**: Express server handles authentication and data persistence
-4. **Database**: Drizzle ORM with PostgreSQL for user data
-5. **External Services**: NEAR Protocol blockchain interactions
+### NEAR Integration Flow
+1. **NearProvider** initializes NEAR connection with testnet configuration
+2. **useNearWallet** hook manages wallet state and connection lifecycle
+3. **useNearAccount** hook fetches account data when wallet is connected
+4. **useNearContract** hook creates contract instances for interaction
+5. **useNearTransaction** hook monitors transaction status and completion
+
+### Application State Management
+1. **TanStack Query** manages server state and caching
+2. **React Context** provides theme and NEAR provider state
+3. **Local component state** handles form inputs and UI interactions
+4. **Error boundaries** catch and handle blockchain-related errors
 
 ## External Dependencies
 
-### NEAR Protocol Integration
-- `@near-js/accounts` - Account management
-- `@near-js/crypto` - Cryptographic operations
-- `@near-js/keystores` - Key storage
-- `@near-js/providers` - RPC providers
-- `@near-js/transactions` - Transaction handling
-- `@near-js/wallet-account` - Wallet integration
+### Core Dependencies
+- **@near-js/*** packages for NEAR Protocol blockchain interactions
+- **@radix-ui/react-*** components for accessible UI primitives
+- **@tanstack/react-query** for server state management
+- **@neondatabase/serverless** for PostgreSQL database connections
+- **drizzle-orm** for type-safe database operations
 
-### Database & Storage
-- `@neondatabase/serverless` - Neon database client
-- `drizzle-orm` - Type-safe ORM
-- `drizzle-kit` - Migration tools
+### Development Dependencies
+- **Vite plugins** for enhanced development experience
+- **TypeScript** for type safety across the entire stack
+- **ESLint and Prettier** for code quality and consistency
+- **Tailwind CSS** for utility-first styling approach
 
-### UI & Styling
-- `@radix-ui/*` - Accessible UI primitives
-- `tailwindcss` - Utility-first CSS framework
-- `lucide-react` - Icon library
+### Testing Dependencies
+- **Jest** and **React Testing Library** for comprehensive testing
+- **@testing-library/jest-dom** for enhanced DOM testing matchers
 
 ## Deployment Strategy
 
-### Development
-- Run `npm run dev` for local development
-- Vite dev server with hot reload
-- Express server with TypeScript compilation
+### Development Environment
+- **Vite dev server** with hot module replacement
+- **Express server** running alongside for API development
+- **In-memory storage** for quick development iteration
+- **Replit integration** with runtime error overlay
 
-### Production Build
-- `npm run build` - Builds both frontend and backend
-- Frontend: Vite build to `dist/public`
-- Backend: ESBuild compilation to `dist/index.js`
+### Production Environment
+- **Static build** generated by Vite for optimal performance
+- **Express server** serving both API and static files
+- **PostgreSQL database** via Neon for production data
+- **Environment-based configuration** for different deployment scenarios
 
-### Database Management
-- `npm run db:push` - Push schema changes to database
-- Environment variable `DATABASE_URL` required for PostgreSQL connection
+### Package Distribution
+- **NPM package** ready for publication with proper build configuration
+- **TypeScript declarations** included for full IDE support
+- **ESM and CommonJS** builds for compatibility
+- **Rollup bundling** for optimized package size
 
 ## Changelog
 
 ```
 Changelog:
-- July 05, 2025: Initial project setup with showcase website
-- July 05, 2025: Complete NEAR React Hooks npm package implementation
-  • Created comprehensive TypeScript npm package structure
-  • Implemented all four core hooks (useNearWallet, useNearAccount, useNearContract, useNearTransaction)
-  • Built three complete demo applications with professional styling
-  • Added comprehensive test suite with Jest and React Testing Library
-  • Configured CI/CD pipeline with automated testing and npm publishing
-  • Created detailed documentation including README, API docs, and contributing guidelines
-  • Set up build system with Rollup for ESM/CJS support
-  • Added TypeScript configuration and type definitions
-- July 05, 2025: Critical Community Feedback Integration
-  • Received feedback to create interface design proposal before implementation
-  • Created comprehensive INTERFACE-DESIGN-PROPOSAL.md with usage examples
-  • Prepared package for GitHub deployment first
-  • Following community best practice of validating API design before coding
-  • Ready for community review and feedback before finalizing implementation
+- July 05, 2025. Initial setup
 ```
 
 ## User Preferences
