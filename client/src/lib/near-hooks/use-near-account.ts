@@ -28,26 +28,43 @@ export function useNearAccount() {
       try {
         setState(prev => ({ ...prev, loading: true, error: null }));
         
-        // Mock account info for demo
-        // In production, this would use wallet.account() and account.getAccountBalance()
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
-        const mockAccount = {
-          accountId,
-          getAccountBalance: () => Promise.resolve({
-            total: "1000000000000000000000000",
-            available: "950000000000000000000000",
+        // Fetch real account balance from NEAR RPC
+        const response = await fetch('https://rpc.testnet.near.org', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            jsonrpc: '2.0',
+            id: 'dontcare',
+            method: 'query',
+            params: {
+              request_type: 'view_account',
+              finality: 'final',
+              account_id: accountId,
+            },
           }),
-        };
-
-        setState({
-          account: mockAccount,
-          balance: "95.5",
-          accountId,
-          loading: false,
-          error: null,
         });
+        
+        const data = await response.json();
+        
+        if (data.result) {
+          // Convert yoctoNEAR to NEAR (1 NEAR = 10^24 yoctoNEAR)
+          const balanceInYocto = data.result.amount;
+          const balanceInNear = (parseInt(balanceInYocto) / Math.pow(10, 24)).toFixed(4);
+          
+          setState({
+            account: data.result,
+            balance: balanceInNear,
+            accountId,
+            loading: false,
+            error: null,
+          });
+        } else {
+          throw new Error(data.error?.message || 'Failed to fetch account');
+        }
       } catch (error) {
+        console.error('Error fetching account balance:', error);
         setState(prev => ({
           ...prev,
           loading: false,

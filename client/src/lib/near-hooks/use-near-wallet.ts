@@ -17,23 +17,63 @@ export function useNearWallet() {
 
     const initWallet = async () => {
       try {
-        // Mock wallet connection for demo
-        // In production, this would use actual WalletConnection from near-api-js
-        const mockWallet = {
-          isSignedIn: () => false,
-          getAccountId: () => null,
-          requestSignIn: () => Promise.resolve(),
-          signOut: () => Promise.resolve(),
+        console.log('Initializing NEAR wallet connection...');
+        
+        // For browser compatibility, implement a simple wallet interface
+        // that redirects to NEAR wallet without Node.js dependencies
+        const wallet = {
+          isSignedIn: () => {
+            // Check for wallet callback params in URL
+            return window.location.search.includes('account_id') || 
+                   localStorage.getItem('near_app_wallet_auth_key') !== null;
+          },
+          getAccountId: () => {
+            // Get account ID from URL params or localStorage
+            const urlParams = new URLSearchParams(window.location.search);
+            const accountId = urlParams.get('account_id');
+            if (accountId) {
+              localStorage.setItem('near_account_id', accountId);
+              return accountId;
+            }
+            return localStorage.getItem('near_account_id');
+          },
+          requestSignIn: async ({ contractId, methodNames }: any = {}) => {
+            const appTitle = 'NEAR React Hooks Demo';
+            const successUrl = window.location.origin + window.location.pathname;
+            const failureUrl = successUrl;
+            
+            const walletUrl = 'https://wallet.testnet.near.org/login/?';
+            const params = new URLSearchParams({
+              contract_id: contractId || '',
+              success_url: successUrl,
+              failure_url: failureUrl,
+              app_title: appTitle,
+            });
+            
+            window.location.assign(walletUrl + params.toString());
+          },
+          signOut: () => {
+            localStorage.removeItem('near_account_id');
+            localStorage.removeItem('near_app_wallet_auth_key');
+            // Clear URL params
+            window.history.replaceState({}, document.title, window.location.pathname);
+          }
         };
+        
+        const isSignedIn = wallet.isSignedIn();
+        const accountId = isSignedIn ? wallet.getAccountId() : null;
+        
+        console.log('Wallet initialized:', { isSignedIn, accountId });
 
         setState({
-          wallet: mockWallet,
-          accountId: null,
-          isConnected: false,
+          wallet,
+          accountId,
+          isConnected: isSignedIn,
           loading: false,
           error: null,
         });
       } catch (error) {
+        console.error('Failed to initialize wallet:', error);
         setState(prev => ({
           ...prev,
           loading: false,
@@ -45,28 +85,23 @@ export function useNearWallet() {
     initWallet();
   }, [initialized, near]);
 
-  const signIn = useCallback(async (contractId?: string) => {
-    if (!state.wallet) return;
+  const signIn = useCallback(async (contractId?: string, methodNames?: string[]) => {
+    if (!state.wallet) {
+      throw new Error('Wallet not initialized');
+    }
 
     try {
       setState(prev => ({ ...prev, loading: true, error: null }));
       
-      // Mock sign in for demo
-      // In production, this would call wallet.requestSignIn()
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Simulate successful sign in
-      setState(prev => ({
-        ...prev,
-        accountId: "demo-user.testnet",
-        isConnected: true,
-        loading: false,
-      }));
+      await state.wallet.requestSignIn({
+        contractId,
+        methodNames,
+      });
     } catch (error) {
       setState(prev => ({
         ...prev,
         loading: false,
-        error: error instanceof Error ? error.message : "Sign in failed",
+        error: error instanceof Error ? error.message : 'Sign in failed',
       }));
     }
   }, [state.wallet]);

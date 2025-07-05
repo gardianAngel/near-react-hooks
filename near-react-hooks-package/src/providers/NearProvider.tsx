@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { connect, keyStores } from 'near-api-js';
+import { connect } from 'near-api-js';
+import { keyStores } from 'near-api-js';
 import { NearConfig } from '../types';
 
 interface NearContextType {

@@ -27,7 +27,7 @@ export function useNearTransaction(transactionHash?: string): TransactionState {
       try {
         setState(prev => ({ ...prev, loading: true, error: null }));
         
-        const provider = near.connection.provider as providers.JsonRpcProvider;
+        const provider = near.connection.provider;
         
         // Get transaction status
         const result = await provider.txStatus(transactionHash, 'unused');

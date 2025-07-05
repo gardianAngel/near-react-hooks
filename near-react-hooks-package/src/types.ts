@@ -39,6 +39,7 @@ export interface TransactionState {
 export interface ContractMethods {
   viewMethods?: string[];
   changeMethods?: string[];
+  useLocalViewExecution?: boolean;
 }
 
 export interface CallMethodOptions {
